@@ -1,4 +1,4 @@
-module EasyBuild.FileSystemProvider
+module EasyBuild.FileSystemProvider.RelativeFileSystemProvider
 
 open System.Reflection
 open ProviderImplementation.ProvidedTypes
@@ -30,13 +30,10 @@ let rec private createDirectoryProperties
     createFileLiterals directoryInfo rootType
 
     // Add parent directory
-    rootType.AddMemberDelayed( fun () ->
+    rootType.AddMemberDelayed(fun () ->
         let directoryType =
-            ProvidedTypeDefinition(
-                "..",
-                Some typeof<obj>,
-                hideObjectMethods = true
-            )
+            ProvidedTypeDefinition("..", Some typeof<obj>, hideObjectMethods = true)
+
         directoryType.AddXmlDoc $"Interface representing directory '{directoryInfo.FullName}'"
 
         createDirectoryProperties directoryInfo.Parent directoryType
@@ -45,13 +42,10 @@ let rec private createDirectoryProperties
 
     for folder in directoryInfo.EnumerateDirectories() do
         // Build the folder member on demand as we can have a lot of folders/files
-        rootType.AddMemberDelayed( fun () ->
+        rootType.AddMemberDelayed(fun () ->
             let folderType =
-                ProvidedTypeDefinition(
-                    folder.Name,
-                    Some typeof<obj>,
-                    hideObjectMethods = true
-                )
+                ProvidedTypeDefinition(folder.Name, Some typeof<obj>, hideObjectMethods = true)
+
             folderType.AddXmlDoc $"Interface representing folder '{folder.FullName}'"
 
             // Walk through the folder
@@ -60,15 +54,15 @@ let rec private createDirectoryProperties
             folderType
         )
 
+let private watchDir (directoryInfo: DirectoryInfo) =
+    let watcher = new FileSystemWatcher(directoryInfo.FullName)
+    watcher.EnableRaisingEvents <- true
+
+    watcher
+
 [<TypeProvider>]
 type RelativeFileSystemProvider(config: TypeProviderConfig) as this =
-    inherit
-        TypeProviderForNamespaces(
-            config,
-            assemblyReplacementMap =
-                [ ("EasyBuild.FileSystemProvider.DesignTime", "EasyBuild.FileSystemProvider") ],
-            addDefaultProbingLocation = true
-        )
+    inherit TypeProviderForNamespaces(config)
 
     let namespaceName = "EasyBuild.FileSystemProvider"
     let assembly = Assembly.GetExecutingAssembly()
@@ -108,7 +102,8 @@ type RelativeFileSystemProvider(config: TypeProviderConfig) as this =
                                 hideObjectMethods = true
                             )
 
-                        rootType.AddXmlDoc $"Interface representing directory '{rootDirectory.FullName}'"
+                        rootType.AddXmlDoc
+                            $"Interface representing directory '{rootDirectory.FullName}'"
 
                         createDirectoryProperties rootDirectory rootType
 
@@ -116,3 +111,6 @@ type RelativeFileSystemProvider(config: TypeProviderConfig) as this =
         )
 
     do this.AddNamespace(namespaceName, [ relativeFileSystem ])
+
+[<assembly: TypeProviderAssembly>]
+do ()

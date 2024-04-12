@@ -39,7 +39,7 @@ let tests =
                 let expected = Path.GetFullPath(Path.Join(__SOURCE_DIRECTORY__, "..", "README.md"))
 
                 Expect.equal
-                    CurrentDirectoryDot.``..``.src.``EasyBuild.FileSystemProvider.DesignTime``.``..``.``..``.``README.md``
+                    CurrentDirectoryDot.``..``.src.``..``.``README.md``
                     expected
             }
 

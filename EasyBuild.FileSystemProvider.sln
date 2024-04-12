@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "EasyBuild.FileSystemProvider", "src\EasyBuild.FileSystemProvider.fsproj", "{B989ED22-D975-44B5-BA38-A77FC105E877}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "EasyBuild.FileSystemProvider.Tests", "tests\EasyBuild.FileSystemProvider.Tests.fsproj", "{E80DDC36-E769-4AFC-8974-883B2FDF89CF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B989ED22-D975-44B5-BA38-A77FC105E877}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B989ED22-D975-44B5-BA38-A77FC105E877}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B989ED22-D975-44B5-BA38-A77FC105E877}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B989ED22-D975-44B5-BA38-A77FC105E877}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E80DDC36-E769-4AFC-8974-883B2FDF89CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E80DDC36-E769-4AFC-8974-883B2FDF89CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E80DDC36-E769-4AFC-8974-883B2FDF89CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E80DDC36-E769-4AFC-8974-883B2FDF89CF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

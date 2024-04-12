@@ -9,7 +9,7 @@
         <Compile Include="Main.fs" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="../src/EasyBuild.FileSystemProvider.Runtime/EasyBuild.FileSystemProvider.fsproj" />
+        <ProjectReference Include="../src/EasyBuild.FileSystemProvider.fsproj" />
     </ItemGroup>
     <ItemGroup>
       <PackageReference Include="Expecto" />
