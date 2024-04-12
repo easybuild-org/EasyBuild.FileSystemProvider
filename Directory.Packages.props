@@ -1,0 +1,16 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageVersion Include="Expecto" Version="10.2.1" />
+    <!--
+        Expecto is forcing us to depends on FSharp.Core 7.0.200 otherwise
+        we get a warning about a downgrade.
+    -->
+    <PackageVersion Include="FSharp.Core" Version="7.0.200" />
+    <PackageVersion Include="FSharp.TypeProviders.SDK" Version="8.0.2" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
+    <PackageVersion Include="YoloDev.Expecto.TestSdk" Version="0.14.3" />
+  </ItemGroup>
+</Project>

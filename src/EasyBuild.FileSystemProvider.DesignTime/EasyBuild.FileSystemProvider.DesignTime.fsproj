@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <DefineConstants>IS_DESIGNTIME</DefineConstants>
+    <!-- This allows the component to execute from 'bin' directory during build -->
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="RelativeFileSystemProvider.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="FSharp.TypeProviders.SDK">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <!-- <PackageReference Update="FSharp.Core" Version="4.7.2">
+      This excludes FSharp.Core.xml and FSharp.Core.resources.dll while referencing the right FSharp.Core.dll version
+      <ExcludeAssets>runtime;contentFiles</ExcludeAssets>
+    </PackageReference> -->
+  </ItemGroup>
+</Project>
