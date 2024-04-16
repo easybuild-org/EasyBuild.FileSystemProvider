@@ -10,6 +10,7 @@
   <ItemGroup>
     <Compile Include="Helpers.fs" />
     <Compile Include="RelativeFileSystemProvider.fs" />
+    <Compile Include="VirtualFileSystemProvider.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FSharp.TypeProviders.SDK">

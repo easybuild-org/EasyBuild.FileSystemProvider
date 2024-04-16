@@ -2,10 +2,12 @@
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <TargetFramework>net8.0</TargetFramework>
-        <DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
     <ItemGroup>
+        <Compile Include="Utils.fs" />
+        <Compile Include="VirtualFileSystemProvider.fs" />
+        <Compile Include="RelativeFileSystemProvider.fs" />
         <Compile Include="Main.fs" />
     </ItemGroup>
     <ItemGroup>
