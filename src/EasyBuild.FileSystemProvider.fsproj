@@ -8,14 +8,15 @@
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Helpers.fs" />
+    <Compile Include="ProvidedTypes.fsi" />
+    <Compile Include="ProvidedTypes.fs" />
     <Compile Include="RelativeFileSystemProvider.fs" />
     <Compile Include="VirtualFileSystemProvider.fs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="FSharp.TypeProviders.SDK">
+    <!-- <PackageReference Include="FSharp.TypeProviders.SDK">
       <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
+    </PackageReference> -->
     <!-- <PackageReference Update="FSharp.Core" Version="4.7.2">
       This excludes FSharp.Core.xml and FSharp.Core.resources.dll while referencing the right FSharp.Core.dll version
       <ExcludeAssets>runtime;contentFiles</ExcludeAssets>
