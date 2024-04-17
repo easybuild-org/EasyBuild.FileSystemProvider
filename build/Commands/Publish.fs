@@ -339,8 +339,7 @@ type PublishCommand() =
                 "git",
                 CmdLine.empty
                 |> CmdLine.appendRaw "commit"
-                |> CmdLine.appendRaw "-m"
-                |> CmdLine.appendRaw $"chore: release {newVersion.ToString()}"
+                |> CmdLine.appendPrefix "-m" $"chore: release {newVersion.ToString()}"
                 |> CmdLine.toString
             )
 
