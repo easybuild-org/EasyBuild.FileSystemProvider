@@ -5,8 +5,14 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 <!-- EasyBuild: START -->
-<!-- last_commit_released: 47273b33553ba49c1c5814dd8ebae3c8ef17fee2 -->
+<!-- last_commit_released: c4548a5433a2732aad9f9d5ca090bdcc60bd517c -->
 <!-- EasyBuild: END -->
+
+## 0.1.1
+
+### 🐞 Bug Fixes
+
+- Use inlined version of TPSDK files instead of the NuGet package (could not make the NuGet SDK version work) ([c4548a5](https://github.com/easybuild-org/EasyBuild.FileSystemProvider/commit/c4548a5433a2732aad9f9d5ca090bdcc60bd517c))
 
 ## 0.1.0
 
