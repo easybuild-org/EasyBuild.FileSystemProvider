@@ -38,9 +38,9 @@ open EasyBuild.FileSystemProvider
 // Path the relative path you want to work with
 // You can use `"."` or `""` to represent the current directory
 
-type Workspace = RelativeFileSystemProvider<".">
+type Workspace = RelativeFileSystem<".">
 
-type SourceWorkspace = RelativeFileSystemProvider<"./src/">
+type SourceWorkspace = RelativeFileSystem<"./src/">
 ```
 
 Each folder have 2 special properties:
@@ -62,9 +62,9 @@ Imagine you have the following project structure:
 
 ```fsharp
 // Workspace represents the root folder `/home/project/`
-type Workspace = RelativeFileSystemProvider<".">
+type Workspace = RelativeFileSystem<".">
 
-Workspace.client.index.html // gives you "/home/project/client/index.html"
+Workspace.client.``index.html`` // gives you "/home/project/client/index.html"
 Workspace.client.``.`` // gives you "/home/project/client"
 Workspace.client.``..``.docs // gives you "/home/project/docs"
 // etc.
@@ -149,7 +149,7 @@ public
     """
      >
 
-VirtualWorkspace.dist.client.index.html // gives you "/home/project/dist/client/index.html"
+VirtualWorkspace.dist.client.``index.html`` // gives you "/home/project/dist/client/index.html"
 VirtualWorkspace.dist.client.``.`` // gives you "/home/project/dist/client"
 VirtualWorkspace.dist.``..``.docs.``.`` // gives you "/home/project/docs"
 ```
