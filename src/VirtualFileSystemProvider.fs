@@ -96,10 +96,7 @@ module Parser =
             | _ -> false
 
         override this.GetHashCode() =
-            // Is it the correct way to implement GetHashCode?
-            // It was proposed by Copilot and because I never implemented GetHashCode
-            // I am trusting it, nothing bad can happen, right? :)
-            HashCode.Combine(this.Name, this.IndentCount, this.Parent, this.Children)
+            (this.Name, this.IndentCount, this.Parent, this.Children).GetHashCode()
 
     let private processText (text: string) =
         // Normalize line endings
