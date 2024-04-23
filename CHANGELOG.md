@@ -5,8 +5,14 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 <!-- EasyBuild: START -->
-<!-- last_commit_released: 866b3620ca92ef200caef706d73db047ea98956a -->
+<!-- last_commit_released: c5efac3231f68e4c8b3f5129d49da72ab5cd82e0 -->
 <!-- EasyBuild: END -->
+
+## 0.3.0
+
+### 🚀 Features
+
+- Add `ToString()` as a static member to directories interfaces + add XmlDoc to dot inode for VirtualFileSystem ([31c3019](https://github.com/easybuild-org/EasyBuild.FileSystemProvider/commit/31c3019c1572542c4615bae8fb2757175efacaa3))
 
 ## 0.2.0
 
