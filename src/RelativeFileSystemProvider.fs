@@ -21,12 +21,28 @@ let rec private createDirectoryProperties
     (rootType: ProvidedTypeDefinition)
     =
 
-    let currentFolderField =
-        ProvidedField.Literal(".", typeof<string>, directoryInfo.FullName)
+    // Extract the full path in a variable so we can use it in the ToString method
+    let currentFolderFullName = directoryInfo.FullName
 
-    currentFolderField.AddXmlDoc $"Get the full path to '{directoryInfo.FullName}'"
+    let currentFolderField =
+        ProvidedField.Literal(".", typeof<string>, currentFolderFullName)
+
+    let toStringMethod =
+        ProvidedMethod(
+            "ToString",
+            [],
+            typeof<string>,
+            isStatic = true,
+            invokeCode = fun args -> <@@ currentFolderFullName @@>
+        )
+
+    let xmlDocText = $"Get the full path to '{currentFolderFullName}'"
+
+    currentFolderField.AddXmlDoc xmlDocText
+    toStringMethod.AddXmlDoc xmlDocText
 
     rootType.AddMember currentFolderField
+    rootType.AddMember toStringMethod
     createFileLiterals directoryInfo rootType
 
     // Add parent directory

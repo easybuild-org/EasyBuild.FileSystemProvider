@@ -118,5 +118,20 @@ dist/
                             VirtualWorkspaceRelativeToCurrentDir.dist.client.``..``.``..``.dist.``.``
                             expected
                     }
+
+                    test "Directory path can be accessed using ToString()" {
+                        let distExpected = Path.GetFullPath(Path.Join(__SOURCE_DIRECTORY__, "dist"))
+
+                        let publicExpected =
+                            Path.GetFullPath(Path.Join(__SOURCE_DIRECTORY__, "public"))
+
+                        Expect.equal
+                            (VirtualWorkspaceRelativeToCurrentDir.dist.ToString())
+                            distExpected
+
+                        Expect.equal
+                            (VirtualWorkspaceRelativeToCurrentDir.dist.``..``.``public``.ToString())
+                            publicExpected
+                    }
                 ]
         ]

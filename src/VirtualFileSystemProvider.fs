@@ -171,10 +171,29 @@ let rec private createInodeProperties
     // If we are not at the top of the virtual tree, we add access to the current folder
     // If user needs to access the current folder, he should use RelativeFileSystemProvider instead
     if inode.IndentCount <> -1 then
+
+        // Extract the full path in a variable so we can use it in the ToString method
+        let currentFolderFullName = directoryInfo.FullName
+
         let currentFolderField =
-            ProvidedField.Literal(".", typeof<string>, directoryInfo.FullName)
+            ProvidedField.Literal(".", typeof<string>, currentFolderFullName)
+
+        let toStringMethod =
+            ProvidedMethod(
+                "ToString",
+                [],
+                typeof<string>,
+                isStatic = true,
+                invokeCode = fun args -> <@@ currentFolderFullName @@>
+            )
+
+        let xmlDocText = $"Get the full path to '{currentFolderFullName}'"
+
+        currentFolderField.AddXmlDoc xmlDocText
+        toStringMethod.AddXmlDoc xmlDocText
 
         rootType.AddMember currentFolderField
+        rootType.AddMember toStringMethod
 
     // Add parent directory if we have one
     match inode.Parent with
