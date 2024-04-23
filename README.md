@@ -43,10 +43,11 @@ type Workspace = RelativeFileSystem<".">
 type SourceWorkspace = RelativeFileSystem<"./src/">
 ```
 
-Each folder have 2 special properties:
+Each folder have 2 special properties and 1 static method:
 
 - ` ``.`` `: Represents the current folder
 - ` ``..`` `: Represents the parent folder
+- `ToString()`: alias to ` ``.`` ` if you don't want to use the backtick syntax
 
 Example:
 
