@@ -26,7 +26,21 @@ let rec private createDirectoryProperties
 
     currentFolderField.AddXmlDoc $"Get the full path to '{directoryInfo.FullName}'"
 
+    let currentFolderFullName = directoryInfo.FullName
+
+    // The type provider 'EasyBuild.FileSystemProvider.RelativeFileSystemProvider+RelativeFileSystemProvider' reported an error in the context of provided type 'EasyBuild.FileSystemProvider.RelativeFileSystem,relativePath="."', member 'ToString'. The error: Unsupported constant type 'System.IO.DirectoryInfo'. Quotations provided by type providers can only contain simple constants. The implementation of the type provider may need to be adjusted by moving a value declared outside a provided quotation literal to be a 'let' binding inside the quotation literal.F# Compiler3022
+
+    let toStringMethod =
+        ProvidedMethod(
+            "ToString",
+            [],
+            typeof<string>,
+            isStatic = true,
+            invokeCode = fun args -> <@@ currentFolderFullName @@>
+        )
+
     rootType.AddMember currentFolderField
+    rootType.AddMember toStringMethod
     createFileLiterals directoryInfo rootType
 
     // Add parent directory

@@ -43,4 +43,14 @@ let tests =
 
                 Expect.equal CurrentDirectoryDot.fixtures.folder1.``test.txt`` expected
             }
+
+            test "Directory path can be accessed using ToString()" {
+                let expectedRoot = __SOURCE_DIRECTORY__
+
+                let expectedFolder1 =
+                    Path.GetFullPath(Path.Join(__SOURCE_DIRECTORY__, "fixtures", "folder1"))
+
+                Expect.equal (CurrentDirectoryDot.ToString()) expectedRoot
+                Expect.equal (CurrentDirectoryDot.fixtures.folder1.ToString()) expectedFolder1
+            }
         ]
