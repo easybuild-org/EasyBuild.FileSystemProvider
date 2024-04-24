@@ -117,8 +117,8 @@ Template format:
 
 - Indentation is used to represent the hierarchy of the files and directories.
 
-    > [!NOTE]
-    > You can use any number of spaces or tabs for indentation.
+> [!NOTE]
+> You can use any number of spaces or tabs for indentation.
 
     ```text
     dist
