@@ -72,9 +72,10 @@ Workspace.client.``..``.docs // gives you "/home/project/docs"
 ```
 
 > [!WARNING]
-> At the time of writing, `RelativeFileSystemProvider` does not watch you filesystem for changes. To manually refresh changes, you can do one of the following:
-> * Rebuild the project
+> At the time of writing, `RelativeFileSystemProvider` does not watch you filesystem for changes. To refresh changes, you can do one of the following:
 > * Restart the IDE
+> * Make a change to RelativeFileSystemProvider<"."> to force a refresh
+> * Rebuild the project
 >
 > This is [planned](https://github.com/easybuild-org/EasyBuild.FileSystemProvider/issues/1) to be improved in the future
 
