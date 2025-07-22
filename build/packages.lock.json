@@ -13,9 +13,9 @@
       },
       "FSharp.Core": {
         "type": "Direct",
-        "requested": "[8.0.200, )",
-        "resolved": "8.0.200",
-        "contentHash": "qnxoF3Fu0HzfOeYdrwmQOsLP1v+OtOMSIYkNVUwf6nGqWzL03Hh4r6VFCvCb54jlsgtt3WADVYkKkrgdeY5kiQ=="
+        "requested": "[8.0.403, )",
+        "resolved": "8.0.403",
+        "contentHash": "ldNIn4IksrJL/X3rF4R/y9pa3RmwkcGYQ3xFMdbJj8dJ9Q49J735m6sMy3MbCK9gj3YoCsxlyFeExCiNDy3gHQ=="
       },
       "LibGit2Sharp": {
         "type": "Direct",
