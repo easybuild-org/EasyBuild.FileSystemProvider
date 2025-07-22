@@ -34,7 +34,7 @@ module Parser =
         /// <returns></returns>
         member this.NormalizedName =
             if this.IsFolder then
-                this.Name + "/"
+                this.Name + string Path.DirectorySeparatorChar
             else
                 this.Name
 
@@ -153,7 +153,7 @@ let private createFileLiteral
     (rootType: ProvidedTypeDefinition)
     =
 
-    let fullPath = rootPath + "/" + inode.Name
+    let fullPath = rootPath + string Path.DirectorySeparatorChar + inode.Name
     let pathFieldLiteral = ProvidedField.Literal(inode.Name, typeof<string>, fullPath)
 
     pathFieldLiteral.AddXmlDoc $"Path to '{fullPath}'"
