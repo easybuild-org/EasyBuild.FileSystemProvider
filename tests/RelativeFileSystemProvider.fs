@@ -10,7 +10,9 @@ type CurrentDirectoryDot = RelativeFileSystem<".">
 
 type ParentDirectory = RelativeFileSystem<"..">
 
-let getRelativePathFor value = Path.GetRelativePath(__SOURCE_DIRECTORY__, value)
+let getRelativePathFor value =
+    Path.GetRelativePath(__SOURCE_DIRECTORY__, value)
+
 let tests =
     testList
         "RelativeFileSystemProvider"
@@ -32,7 +34,9 @@ let tests =
             }
 
             test "We can navigate the tree upwards" {
-                let expected = getRelativePathFor <| Path.GetFullPath(Path.Join(__SOURCE_DIRECTORY__, "..", "README.md"))
+                let expected =
+                    getRelativePathFor
+                    <| Path.GetFullPath(Path.Join(__SOURCE_DIRECTORY__, "..", "README.md"))
 
                 Expect.equal CurrentDirectoryDot.``..``.src.``..``.``README.md`` expected
             }

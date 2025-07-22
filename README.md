@@ -9,14 +9,15 @@ EasyBuild.FileSystemProvider is a library that provides a set of F# Type Provide
 
 In every project of mine, I need to orchestrate tasks like building, testing, etc. which involves working with files and directories. The standard way of doing it is by using hardcoded `string` but it is easy to break. You also need to remember what is current working directory or relative path you are working with.
 
-To fix this problem, I created this library that provides 2 F# Type Providers:
+To fix this problem, I created this library that provides 3 F# Type Providers:
 
-- `RelativeFileSystemProvider`, typed representation of files and directories based on your project structure.
+- `RelativeFileSystemProvider`, typed representation of files and directories based on your project structure; outputs relative path strings.
+- `AbsoluteFileSystemProvider`, typed representation of files and directories based on your project structure; outputs absolute path strings.
 - `VirtualFileSystemProvider`, typed representation of files and directories based on a virtual file system.
 
 ### When to use each one?
 
-Use `RelativeFileSystemProvider` when you want to access files and directories that are tracked in your project. For example, you want to access the path of your `fsproj` file or a `public` assets folder.
+Use `RelativeFileSystemProvider`/`AbsoluteFileSystemProvider` when you want to access files and directories that are tracked in your project. For example, you want to access the path of your `fsproj` file or a `public` assets folder.
 
 Use `VirtualFileSystemProvider` when you want to access files and directories that are not tracked in your project. For example, you want to use a destination folder or access a `obj`, `bin` folder.
 
@@ -72,7 +73,7 @@ Workspace.client.``..``.docs // gives you "/home/project/docs"
 ```
 
 > [!WARNING]
-> At the time of writing, `RelativeFileSystemProvider` does not watch you filesystem for changes. To refresh changes, you can do one of the following:
+> At the time of writing, `RelativeFileSystemProvider`/`AbsoluteFileSystemProvider` does not watch you filesystem for changes. To refresh changes, you can do one of the following:
 > * Restart the IDE
 > * Make a change to RelativeFileSystemProvider<"."> to force a refresh
 > * Rebuild the project

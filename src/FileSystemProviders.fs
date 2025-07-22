@@ -1,4 +1,4 @@
-﻿module EasyBuild.FileSystemProvider.AbsoluteFileSystemProviderImpl
+﻿module EasyBuild.FileSystemProvider.FileSystemProviders
 
 open System.Reflection
 open ProviderImplementation.ProvidedTypes
@@ -9,7 +9,8 @@ open System.IO
 let private createFileLiterals
     (directoryInfo: DirectoryInfo)
     (rootType: ProvidedTypeDefinition)
-    (makePath: string -> string) =
+    (makePath: string -> string)
+    =
 
     for file in directoryInfo.EnumerateFiles() do
         let pathFieldLiteral =
@@ -87,12 +88,14 @@ type IFileSystemProvider =
     abstract MakePath: basePath: DirectoryInfo -> targetPath: string -> string
 
 [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-type FileSystemProviderImpl(config: TypeProviderConfig, implementation: IFileSystemProvider) as this =
+type FileSystemProviderImpl(config: TypeProviderConfig, implementation: IFileSystemProvider) as this
+    =
     inherit TypeProviderForNamespaces(config)
     let namespaceName = "EasyBuild.FileSystemProvider"
     let assembly = Assembly.GetExecutingAssembly()
     let providerName = implementation.ImplementationName
     let makePath = implementation.MakePath
+
     let relativeFileSystem =
         ProvidedTypeDefinition(
             assembly,
@@ -140,21 +143,26 @@ type FileSystemProviderImpl(config: TypeProviderConfig, implementation: IFileSys
 
 [<TypeProvider>]
 type AbsoluteFileSystemProvider(config: TypeProviderConfig) =
-    inherit FileSystemProviderImpl(
-       config, { new IFileSystemProvider with
-       member this.ImplementationName = "AbsoluteFileSystem"
-       member this.MakePath basePath filePath = filePath }
-       )
+    inherit
+        FileSystemProviderImpl(
+            config,
+            { new IFileSystemProvider with
+                member this.ImplementationName = "AbsoluteFileSystem"
+                member this.MakePath basePath filePath = filePath
+            }
+        )
 
 [<TypeProvider>]
 type RelativeFileSystemProvider(config: TypeProviderConfig) =
-    inherit FileSystemProviderImpl(
-        config,
-        { new IFileSystemProvider with
-            member this.ImplementationName = "RelativeFileSystem"
-            member this.MakePath basePath filePath =
-                Path.GetRelativePath(basePath.FullName, filePath)
-                }
+    inherit
+        FileSystemProviderImpl(
+            config,
+            { new IFileSystemProvider with
+                member this.ImplementationName = "RelativeFileSystem"
+
+                member this.MakePath basePath filePath =
+                    Path.GetRelativePath(basePath.FullName, filePath)
+            }
         )
 
 [<assembly: TypeProviderAssembly>]

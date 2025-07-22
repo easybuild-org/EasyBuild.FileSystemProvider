@@ -40,6 +40,7 @@ let tests =
                     Path.GetFullPath(
                         Path.Join(__SOURCE_DIRECTORY__, "fixtures", "folder1", "test.txt")
                     )
+
                 Expect.equal CurrentDirectoryDot.fixtures.folder1.``test.txt`` expected
             }
 
