@@ -10,7 +10,7 @@ type CurrentDirectoryDot = RelativeFileSystem<".">
 
 type ParentDirectory = RelativeFileSystem<"..">
 
-let getRelativePathFor value =
+let private getRelativePath value =
     Path.GetRelativePath(__SOURCE_DIRECTORY__, value)
 
 let tests =
@@ -18,12 +18,12 @@ let tests =
         "RelativeFileSystemProvider"
         [
             test "Empty string is mapped to the current directory" {
-                let expected = getRelativePathFor __SOURCE_DIRECTORY__
+                let expected = getRelativePath __SOURCE_DIRECTORY__
                 Expect.equal CurrentDirectoryEmptyString.``.`` expected
             }
 
             test "Dot is mapped to the current directory" {
-                let expected = getRelativePathFor __SOURCE_DIRECTORY__
+                let expected = getRelativePath __SOURCE_DIRECTORY__
                 Expect.equal CurrentDirectoryDot.``.`` expected
             }
 
@@ -35,8 +35,8 @@ let tests =
 
             test "We can navigate the tree upwards" {
                 let expected =
-                    getRelativePathFor
-                    <| Path.GetFullPath(Path.Join(__SOURCE_DIRECTORY__, "..", "README.md"))
+                    Path.GetFullPath(Path.Join(__SOURCE_DIRECTORY__, "..", "README.md"))
+                    |> getRelativePath
 
                 Expect.equal CurrentDirectoryDot.``..``.src.``..``.``README.md`` expected
             }
@@ -46,17 +46,17 @@ let tests =
                     Path.GetFullPath(
                         Path.Join(__SOURCE_DIRECTORY__, "fixtures", "folder1", "test.txt")
                     )
-                    |> getRelativePathFor
+                    |> getRelativePath
 
                 Expect.equal CurrentDirectoryDot.fixtures.folder1.``test.txt`` expected
             }
 
             test "Directory path can be accessed using ToString()" {
-                let expectedRoot = getRelativePathFor __SOURCE_DIRECTORY__
+                let expectedRoot = getRelativePath __SOURCE_DIRECTORY__
 
                 let expectedFolder1 =
                     Path.GetFullPath(Path.Join(__SOURCE_DIRECTORY__, "fixtures", "folder1"))
-                    |> getRelativePathFor
+                    |> getRelativePath
 
                 Expect.equal (CurrentDirectoryDot.ToString()) expectedRoot
                 Expect.equal (CurrentDirectoryDot.fixtures.folder1.ToString()) expectedFolder1
