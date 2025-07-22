@@ -5,8 +5,14 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 <!-- EasyBuild: START -->
-<!-- last_commit_released: c5efac3231f68e4c8b3f5129d49da72ab5cd82e0 -->
+<!-- last_commit_released: ddee4ba9bb0dc8cb22a9ca1198d93e1a3c8065e9 -->
 <!-- EasyBuild: END -->
+
+## 0.3.1
+
+### 🐞 Bug Fixes
+
+- VirtualFileSystem uses platform dependent separator (#12) ([36d90ab](https://github.com/easybuild-org/EasyBuild.FileSystemProvider/commit/36d90abf0bb2546be0da6d6157242dd747569ec3))
 
 ## 0.3.0
 
