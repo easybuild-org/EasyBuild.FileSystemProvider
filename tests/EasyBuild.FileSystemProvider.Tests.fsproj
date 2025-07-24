@@ -8,6 +8,7 @@
         <Compile Include="Utils.fs" />
         <Compile Include="VirtualFileSystemProvider.fs" />
         <Compile Include="RelativeFileSystemProvider.fs" />
+        <Compile Include="AbsoluteFileSystemProvider.fs" />
         <Compile Include="Main.fs" />
     </ItemGroup>
     <ItemGroup>

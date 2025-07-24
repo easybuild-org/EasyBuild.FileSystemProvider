@@ -1,4 +1,4 @@
-module EasyBuild.FileSystemProvider.RelativeFileSystemProvider
+﻿module EasyBuild.FileSystemProvider.FileSystemProviders
 
 open System.Reflection
 open ProviderImplementation.ProvidedTypes
@@ -6,11 +6,15 @@ open Microsoft.FSharp.Core.CompilerServices
 
 open System.IO
 
-let private createFileLiterals (directoryInfo: DirectoryInfo) (rootType: ProvidedTypeDefinition) =
+let private createFileLiterals
+    (directoryInfo: DirectoryInfo)
+    (rootType: ProvidedTypeDefinition)
+    (makePath: string -> string)
+    =
 
     for file in directoryInfo.EnumerateFiles() do
         let pathFieldLiteral =
-            ProvidedField.Literal(file.Name, typeof<string>, file.FullName)
+            ProvidedField.Literal(file.Name, typeof<string>, file.FullName |> makePath)
 
         pathFieldLiteral.AddXmlDoc $"Path to '{file.FullName}'"
 
@@ -19,10 +23,11 @@ let private createFileLiterals (directoryInfo: DirectoryInfo) (rootType: Provide
 let rec private createDirectoryProperties
     (directoryInfo: DirectoryInfo)
     (rootType: ProvidedTypeDefinition)
+    (makePath: string -> string)
     =
 
     // Extract the full path in a variable so we can use it in the ToString method
-    let currentFolderFullName = directoryInfo.FullName
+    let currentFolderFullName = directoryInfo.FullName |> makePath
 
     let currentFolderField =
         ProvidedField.Literal(".", typeof<string>, currentFolderFullName)
@@ -43,7 +48,7 @@ let rec private createDirectoryProperties
 
     rootType.AddMember currentFolderField
     rootType.AddMember toStringMethod
-    createFileLiterals directoryInfo rootType
+    createFileLiterals directoryInfo rootType makePath
 
     // Add parent directory
     rootType.AddMemberDelayed(fun () ->
@@ -52,7 +57,7 @@ let rec private createDirectoryProperties
 
         directoryType.AddXmlDoc $"Interface representing directory '{directoryInfo.FullName}'"
 
-        createDirectoryProperties directoryInfo.Parent directoryType
+        createDirectoryProperties directoryInfo.Parent directoryType makePath
         directoryType
     )
 
@@ -65,7 +70,7 @@ let rec private createDirectoryProperties
             folderType.AddXmlDoc $"Interface representing folder '{folder.FullName}'"
 
             // Walk through the folder
-            createDirectoryProperties folder folderType
+            createDirectoryProperties folder folderType makePath
             // Store the folder type in the member
             folderType
         )
@@ -76,18 +81,26 @@ let private watchDir (directoryInfo: DirectoryInfo) =
 
     watcher
 
-[<TypeProvider>]
-type RelativeFileSystemProvider(config: TypeProviderConfig) as this =
-    inherit TypeProviderForNamespaces(config)
+[<Interface>]
+[<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
+type IFileSystemProvider =
+    abstract ImplementationName: string
+    abstract MakePath: basePath: DirectoryInfo -> targetPath: string -> string
 
+[<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
+type FileSystemProviderImpl(config: TypeProviderConfig, implementation: IFileSystemProvider) as this
+    =
+    inherit TypeProviderForNamespaces(config)
     let namespaceName = "EasyBuild.FileSystemProvider"
     let assembly = Assembly.GetExecutingAssembly()
+    let providerName = implementation.ImplementationName
+    let makePath = implementation.MakePath
 
     let relativeFileSystem =
         ProvidedTypeDefinition(
             assembly,
             namespaceName,
-            "RelativeFileSystem",
+            providerName,
             Some typeof<obj>,
             hideObjectMethods = true
         )
@@ -121,12 +134,36 @@ type RelativeFileSystemProvider(config: TypeProviderConfig) as this =
                         rootType.AddXmlDoc
                             $"Interface representing directory '{rootDirectory.FullName}'"
 
-                        createDirectoryProperties rootDirectory rootType
+                        createDirectoryProperties rootDirectory rootType (rootDirectory |> makePath)
 
                         rootType
         )
 
     do this.AddNamespace(namespaceName, [ relativeFileSystem ])
+
+[<TypeProvider>]
+type AbsoluteFileSystemProvider(config: TypeProviderConfig) =
+    inherit
+        FileSystemProviderImpl(
+            config,
+            { new IFileSystemProvider with
+                member this.ImplementationName = "AbsoluteFileSystem"
+                member this.MakePath basePath filePath = filePath
+            }
+        )
+
+[<TypeProvider>]
+type RelativeFileSystemProvider(config: TypeProviderConfig) =
+    inherit
+        FileSystemProviderImpl(
+            config,
+            { new IFileSystemProvider with
+                member this.ImplementationName = "RelativeFileSystem"
+
+                member this.MakePath basePath filePath =
+                    Path.GetRelativePath(basePath.FullName, filePath)
+            }
+        )
 
 [<assembly: TypeProviderAssembly>]
 do ()
