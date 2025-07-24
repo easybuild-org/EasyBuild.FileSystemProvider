@@ -5,8 +5,14 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 <!-- EasyBuild: START -->
-<!-- last_commit_released: ddee4ba9bb0dc8cb22a9ca1198d93e1a3c8065e9 -->
+<!-- last_commit_released: 287fbf31e0b0c9e4d45dfbcfdbae83c6b9314542 -->
 <!-- EasyBuild: END -->
+
+## 1.0.0
+
+### 🚀 Features
+
+- Add `AbsoluteFileSystem` and `RelativeFileSystem` (#14) ([287fbf3](https://github.com/easybuild-org/EasyBuild.FileSystemProvider/commit/287fbf31e0b0c9e4d45dfbcfdbae83c6b9314542))
 
 ## 0.3.1
 
