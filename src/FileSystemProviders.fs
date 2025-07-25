@@ -48,6 +48,30 @@ let rec private createDirectoryProperties
 
     rootType.AddMember currentFolderField
     rootType.AddMember toStringMethod
+
+    // Provide pregenerated access to DirectoryInfo to provide access to other
+    // helpers without requiring us to construct them all in the type provider
+    let getDirectoryInfo =
+        let currentFolderFullName = <@@ currentFolderFullName @@>
+
+        let method =
+            ProvidedMethod(
+                "GetDirectoryInfo",
+                [],
+                typeof<DirectoryInfo>,
+                isStatic = true,
+                invokeCode =
+                    fun args -> <@@ let dir = DirectoryInfo(%%currentFolderFullName) in dir @@>
+            )
+
+        method.AddXmlDoc(
+            """<summary>Retrieves the <c>DirectoryInfo</c> object for the current directory.</summary>
+<returns>The current directory <c>DirectoryInfo</c> object"""
+        )
+
+        method
+
+    rootType.AddMember getDirectoryInfo
     createFileLiterals directoryInfo rootType makePath
 
     // Add parent directory

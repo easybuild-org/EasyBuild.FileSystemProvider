@@ -53,4 +53,26 @@ let tests =
                 Expect.equal (CurrentDirectoryDot.ToString()) expectedRoot
                 Expect.equal (CurrentDirectoryDot.fixtures.folder1.ToString()) expectedFolder1
             }
+
+            test "DirectoryInfo accessible from GetDirectoryInfo()" {
+                let expectedSourceDir = DirectoryInfo(__SOURCE_DIRECTORY__)
+                let actualSourceDir = CurrentDirectoryDot.GetDirectoryInfo()
+                Expect.equal (actualSourceDir.FullName) expectedSourceDir.FullName
+
+                Expect.equal
+                    (actualSourceDir.EnumerateDirectories() |> Seq.length)
+                    (expectedSourceDir.GetDirectories() |> Seq.length)
+
+                let expectedFixturesFolder =
+                    Path.Join(__SOURCE_DIRECTORY__, "fixtures") |> DirectoryInfo
+
+                let actualFixturesFolder = CurrentDirectoryDot.fixtures.GetDirectoryInfo()
+
+                Expect.equal (actualFixturesFolder.FullName) expectedFixturesFolder.FullName
+
+                Expect.equal
+                    (actualFixturesFolder.EnumerateDirectories() |> Seq.length)
+                    (expectedFixturesFolder.GetDirectories() |> Seq.length)
+            }
+
         ]
