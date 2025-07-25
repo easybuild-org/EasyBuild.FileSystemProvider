@@ -7,7 +7,6 @@ open System.IO
 
 type CurrentDirectoryEmptyString = RelativeFileSystem<"">
 type CurrentDirectoryDot = RelativeFileSystem<".">
-
 type ParentDirectory = RelativeFileSystem<"..">
 
 let private getRelativePath value =
@@ -60,5 +59,14 @@ let tests =
 
                 Expect.equal (CurrentDirectoryDot.ToString()) expectedRoot
                 Expect.equal (CurrentDirectoryDot.fixtures.folder1.ToString()) expectedFolder1
+            }
+
+            test "DirectoryInfo accessible from GetDirectoryInfo()" {
+                let expected = DirectoryInfo(__SOURCE_DIRECTORY__)
+                Expect.equal (CurrentDirectoryDot.GetDirectoryInfo().FullName) expected.FullName
+
+                Expect.equal
+                    (CurrentDirectoryDot.GetDirectoryInfo().EnumerateDirectories() |> Seq.length)
+                    (expected.GetDirectories() |> Seq.length)
             }
         ]
