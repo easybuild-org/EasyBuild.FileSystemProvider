@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
-<!-- Visual Studio 2022?+ require netstandard2.0 for compatibility as of 25/07/25 -->
+    <!-- Visual Studio 2022?+ require netstandard2.0 for compatibility as of 25/07/25 -->
     <TargetFramework>netstandard2.0</TargetFramework>
     <DefineConstants>IS_DESIGNTIME</DefineConstants>
     <!-- This allows the component to execute from 'bin' directory during build -->
