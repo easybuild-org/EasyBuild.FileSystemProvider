@@ -19,4 +19,7 @@
       <PackageReference Include="Microsoft.NET.Test.Sdk" />
       <PackageReference Include="YoloDev.Expecto.TestSdk" />
     </ItemGroup>
+    <ItemGroup>
+        <None Include="fixtures\**\*" CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
 </Project>
