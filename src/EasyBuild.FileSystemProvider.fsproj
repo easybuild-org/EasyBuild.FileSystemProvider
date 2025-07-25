@@ -2,7 +2,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
+    <!-- Visual Studio 2022?+ require netstandard2.0 for compatibility as of 25/07/25 -->
+    <TargetFramework>netstandard2.0</TargetFramework>
     <DefineConstants>IS_DESIGNTIME</DefineConstants>
     <!-- This allows the component to execute from 'bin' directory during build -->
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
@@ -10,6 +11,7 @@
   <ItemGroup>
     <Compile Include="ProvidedTypes.fsi" />
     <Compile Include="ProvidedTypes.fs" />
+    <Compile Include="Path.fs" />
     <Compile Include="FileSystemProviders.fs" />
     <Compile Include="VirtualFileSystemProvider.fs" />
   </ItemGroup>

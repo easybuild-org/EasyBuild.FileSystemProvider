@@ -161,7 +161,7 @@ type RelativeFileSystemProvider(config: TypeProviderConfig) =
                 member this.ImplementationName = "RelativeFileSystem"
 
                 member this.MakePath basePath filePath =
-                    Path.GetRelativePath(basePath.FullName, filePath)
+                    Path.getRelativePath basePath.FullName filePath
             }
         )
 
