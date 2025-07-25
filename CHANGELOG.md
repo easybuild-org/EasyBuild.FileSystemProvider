@@ -5,8 +5,17 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 <!-- EasyBuild: START -->
-<!-- last_commit_released: 287fbf31e0b0c9e4d45dfbcfdbae83c6b9314542 -->
+<!-- last_commit_released: b2f46154764784c286f7f3fba8479dd3bea33a4d -->
 <!-- EasyBuild: END -->
+
+## 1.1.0
+
+### 🚀 Features
+
+- Add `GetDirectoryInfo()` for easier access to `DirectoryInfo` type (#15) ([b2f4615](https://github.com/easybuild-org/EasyBuild.FileSystemProvider/commit/b2f46154764784c286f7f3fba8479dd3bea33a4d))
+### 🐞 Bug Fixes
+
+- Target netstandard2.0 allowing back usage from VS (#16) ([15ce1f9](https://github.com/easybuild-org/EasyBuild.FileSystemProvider/commit/15ce1f9821773305551fb0cc5f87297cb23b1660))
 
 ## 1.0.0
 
