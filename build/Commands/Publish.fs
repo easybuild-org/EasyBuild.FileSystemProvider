@@ -110,7 +110,7 @@ type PublishCommand() =
         // libgit2sharp seems all nice at first, but I find the API to be a bit cumbersome
         // when manipulating the repository for (commit, stage, etc.)
         // It also doesn't support SSH
-        use repository = new Repository(Workspace.``.``)
+        use repository = new Repository(Workspace.``.``.ToString())
 
         if repository.Head.FriendlyName <> "main" then
             failwith "You must be on the main branch to publish"
