@@ -19,18 +19,18 @@ let tests =
         [
             test "Empty string is mapped to the current directory" {
                 let expected = getRelativePath __SOURCE_DIRECTORY__
-                Expect.equal CurrentDirectoryEmptyString.``.`` expected
+                Expect.equal (CurrentDirectoryEmptyString.``.``.ToString()) expected
             }
 
             test "Dot is mapped to the current directory" {
                 let expected = getRelativePath __SOURCE_DIRECTORY__
-                Expect.equal CurrentDirectoryDot.``.`` expected
+                Expect.equal (CurrentDirectoryDot.``.``.ToString()) expected
             }
 
             test "Double dot is mapped to the parent directory" {
                 let expected' = Path.GetFullPath(Path.Join(__SOURCE_DIRECTORY__, ".."))
                 let expected = Path.GetRelativePath(expected', expected')
-                Expect.equal ParentDirectory.``.`` expected
+                Expect.equal (ParentDirectory.``.``.ToString()) expected
             }
 
             test "We can navigate the tree upwards" {
@@ -38,7 +38,7 @@ let tests =
                     Path.GetFullPath(Path.Join(__SOURCE_DIRECTORY__, "..", "README.md"))
                     |> getRelativePath
 
-                Expect.equal CurrentDirectoryDot.``..``.src.``..``.``README.md`` expected
+                Expect.equal (CurrentDirectoryDot.``..``.src.``..``.``README.md``.ToString()) expected
             }
 
             test "We can navigate the tree downwards" {
@@ -48,7 +48,7 @@ let tests =
                     )
                     |> getRelativePath
 
-                Expect.equal CurrentDirectoryDot.fixtures.folder1.``test.txt`` expected
+                Expect.equal (CurrentDirectoryDot.fixtures.folder1.``test.txt``.ToString()) expected
             }
 
             test "Directory path can be accessed using ToString()" {

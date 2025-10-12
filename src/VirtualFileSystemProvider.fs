@@ -154,11 +154,18 @@ let private createFileLiteral
     =
 
     let fullPath = rootPath + string Path.DirectorySeparatorChar + inode.Name
-    let pathFieldLiteral = ProvidedField.Literal(inode.Name, typeof<string>, fullPath)
 
-    pathFieldLiteral.AddXmlDoc $"Path to '{fullPath}'"
+    let pathFieldProperty =
+        ProvidedProperty(
+            inode.Name,
+            typeof<FileInfo>,
+            isStatic = true,
+            getterCode = fun args -> <@@ FileInfo(fullPath) @@>
+        )
 
-    rootType.AddMember pathFieldLiteral
+    pathFieldProperty.AddXmlDoc $"Path to '{fullPath}'"
+
+    rootType.AddMember pathFieldProperty
 
 let rec private createInodeProperties
     (inode: Parser.INode)
@@ -175,8 +182,13 @@ let rec private createInodeProperties
         // Extract the full path in a variable so we can use it in the ToString method
         let currentFolderFullName = directoryInfo.FullName
 
-        let currentFolderField =
-            ProvidedField.Literal(".", typeof<string>, currentFolderFullName)
+        let currentFolderProperty =
+            ProvidedProperty(
+                ".",
+                typeof<DirectoryInfo>,
+                isStatic = true,
+                getterCode = fun args -> <@@ DirectoryInfo(currentFolderFullName) @@>
+            )
 
         let toStringMethod =
             ProvidedMethod(
@@ -187,13 +199,24 @@ let rec private createInodeProperties
                 invokeCode = fun args -> <@@ currentFolderFullName @@>
             )
 
+        let getInfoMethod =
+            ProvidedMethod(
+                "GetInfo",
+                [],
+                typeof<DirectoryInfo>,
+                isStatic = true,
+                invokeCode = fun args -> <@@ DirectoryInfo(currentFolderFullName) @@>
+            )
+
         let xmlDocText = $"Get the full path to '{currentFolderFullName}'"
 
-        currentFolderField.AddXmlDoc xmlDocText
+        currentFolderProperty.AddXmlDoc xmlDocText
         toStringMethod.AddXmlDoc xmlDocText
+        getInfoMethod.AddXmlDoc xmlDocText
 
-        rootType.AddMember currentFolderField
+        rootType.AddMember currentFolderProperty
         rootType.AddMember toStringMethod
+        rootType.AddMember getInfoMethod
 
     // Add parent directory if we have one
     match inode.Parent with
