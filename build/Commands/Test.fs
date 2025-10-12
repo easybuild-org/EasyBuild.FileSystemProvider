@@ -17,8 +17,8 @@ type TestCommand() =
     override __.Execute(context, settings) =
 
         if settings.IsWatch then
-            Command.Run("dotnet", "watch test", workingDirectory = Workspace.tests.``.``)
+            Command.Run("dotnet", "watch test", workingDirectory = Workspace.tests.ToString())
         else
-            Command.Run("dotnet", "test", workingDirectory = Workspace.tests.``.``)
+            Command.Run("dotnet", "test", workingDirectory = Workspace.tests.ToString())
 
         0

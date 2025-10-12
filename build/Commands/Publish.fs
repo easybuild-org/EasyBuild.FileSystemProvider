@@ -121,7 +121,10 @@ type PublishCommand() =
         TestCommand().Execute(context, TestSettings()) |> ignore
 
         let changelogContent =
-            File.ReadAllText(Workspace.``CHANGELOG.md``).Replace("\r\n", "\n").Split('\n')
+            File
+                .ReadAllText(Workspace.``CHANGELOG.md``.ToString())
+                .Replace("\r\n", "\n")
+                .Split('\n')
 
         let changelogConfigSection =
             changelogContent
@@ -176,7 +179,8 @@ type PublishCommand() =
             0
         else
 
-            let lastChangelogVersion = Changelog.tryGetLastVersion Workspace.``CHANGELOG.md``
+            let lastChangelogVersion =
+                Changelog.tryGetLastVersion <| Workspace.``CHANGELOG.md``.ToString()
 
             // Should user bump version take priority over commits infered version bump?
             // Should we make the user bump version mutually exclusive?
@@ -290,7 +294,7 @@ type PublishCommand() =
                 |> removeConsecutiveEmptyLines false []
                 |> String.concat "\n"
 
-            File.WriteAllText(Workspace.``CHANGELOG.md``, newChangelogContent)
+            File.WriteAllText(Workspace.``CHANGELOG.md``.ToString(), newChangelogContent)
 
             let escapedPackageReleasesNotes =
                 newVersionLines
@@ -301,15 +305,17 @@ type PublishCommand() =
                 |> fun text -> text.Replace("\"", "\\\\\\\"").Replace(",", "%2c")
 
             // Clean up the src/bin folder
-            if Directory.Exists VirtualWorkspace.src.bin.``.`` then
-                Directory.Delete(VirtualWorkspace.src.bin.``.``, true)
+            if Directory.Exists(VirtualWorkspace.src.bin.``.``.ToString()) then
+                Directory.Delete(VirtualWorkspace.src.bin.``.``.ToString(), true)
 
             let struct (standardOutput, _) =
                 Command.ReadAsync(
                     "dotnet",
                     CmdLine.empty
                     |> CmdLine.appendRaw "pack"
-                    |> CmdLine.appendRaw Workspace.src.``EasyBuild.FileSystemProvider.fsproj``
+                    |> CmdLine.appendRaw (
+                        Workspace.src.``EasyBuild.FileSystemProvider.fsproj``.ToString()
+                    )
                     |> CmdLine.appendRaw "-c Release"
                     |> CmdLine.appendRaw $"-p:PackageVersion=\"%s{newVersion.ToString()}\""
                     |> CmdLine.appendRaw
