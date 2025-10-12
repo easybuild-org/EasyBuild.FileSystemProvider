@@ -67,7 +67,7 @@ let tests =
 
             test "DirectoryInfo accessible from GetDirectoryInfo()" {
                 let expectedWorkingDir = DirectoryInfo(System.Environment.CurrentDirectory)
-                let actualWorkingDir = CurrentDirectoryDot.GetDirectoryInfo()
+                let actualWorkingDir = CurrentDirectoryDot.GetInfo()
                 Expect.equal (actualWorkingDir.FullName) expectedWorkingDir.FullName
 
                 Expect.equal
@@ -77,7 +77,7 @@ let tests =
                 let expectedFixturesFolder =
                     Path.Join(System.Environment.CurrentDirectory, "fixtures") |> DirectoryInfo
 
-                let actualFixturesFolder = CurrentDirectoryDot.fixtures.GetDirectoryInfo()
+                let actualFixturesFolder = CurrentDirectoryDot.fixtures.GetInfo()
 
                 Expect.equal (actualFixturesFolder.FullName) expectedFixturesFolder.FullName
 

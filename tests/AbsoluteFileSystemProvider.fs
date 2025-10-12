@@ -58,7 +58,7 @@ let tests =
 
             test "DirectoryInfo accessible from GetDirectoryInfo()" {
                 let expectedSourceDir = DirectoryInfo(__SOURCE_DIRECTORY__)
-                let actualSourceDir = CurrentDirectoryDot.GetDirectoryInfo()
+                let actualSourceDir = CurrentDirectoryDot.GetInfo()
                 Expect.equal (actualSourceDir.FullName) expectedSourceDir.FullName
 
                 Expect.equal
@@ -68,7 +68,7 @@ let tests =
                 let expectedFixturesFolder =
                     Path.Join(__SOURCE_DIRECTORY__, "fixtures") |> DirectoryInfo
 
-                let actualFixturesFolder = CurrentDirectoryDot.fixtures.GetDirectoryInfo()
+                let actualFixturesFolder = CurrentDirectoryDot.fixtures.GetInfo()
 
                 Expect.equal (actualFixturesFolder.FullName) expectedFixturesFolder.FullName
 
