@@ -93,14 +93,20 @@ dist/
                             )
 
                         Expect.equal
-                            (VirtualWorkspaceRelativeToCurrentDir.dist.client.``index.html``.ToString())
+                            (VirtualWorkspaceRelativeToCurrentDir
+                                .dist
+                                .client
+                                .``index.html``
+                                .ToString())
                             expected
                     }
 
                     test "allows access to empty directory path" {
                         let expected = Path.GetFullPath(Path.Join(__SOURCE_DIRECTORY__, "docs"))
 
-                        Expect.equal (VirtualWorkspaceRelativeToCurrentDir.docs.``.``.ToString()) expected
+                        Expect.equal
+                            (VirtualWorkspaceRelativeToCurrentDir.docs.``.``.ToString())
+                            expected
                     }
 
                     test "going down, up, and down again works" {
@@ -115,7 +121,14 @@ dist/
                         let expected = Path.GetFullPath(Path.Join(__SOURCE_DIRECTORY__, "dist"))
 
                         Expect.equal
-                            (VirtualWorkspaceRelativeToCurrentDir.dist.client.``..``.``..``.dist.``.``.ToString())
+                            (VirtualWorkspaceRelativeToCurrentDir
+                                .dist
+                                .client
+                                .``..``
+                                .``..``
+                                .dist
+                                .``.``
+                                .ToString())
                             expected
                     }
 

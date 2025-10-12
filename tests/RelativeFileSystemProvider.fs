@@ -38,7 +38,9 @@ let tests =
                     Path.GetFullPath(Path.Join(__SOURCE_DIRECTORY__, "..", "README.md"))
                     |> getRelativePath
 
-                Expect.equal (CurrentDirectoryDot.``..``.src.``..``.``README.md``.ToString()) expected
+                Expect.equal
+                    (CurrentDirectoryDot.``..``.src.``..``.``README.md``.ToString())
+                    expected
             }
 
             test "We can navigate the tree downwards" {
