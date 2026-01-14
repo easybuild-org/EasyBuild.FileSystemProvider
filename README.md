@@ -36,7 +36,7 @@ Provide a representation based on your file system structure.
 ```fsharp
 open EasyBuild.FileSystemProvider
 
-// Path the relative path you want to work with
+// The relative path you want to work with
 // You can use `"."` or `""` to represent the current directory
 
 type Workspace = RelativeFileSystem<".">
@@ -66,17 +66,55 @@ Imagine you have the following project structure:
 // Workspace represents the root folder `/home/project/`
 type Workspace = RelativeFileSystem<".">
 
+Workspace.client.``index.html`` // gives you "client/index.html"
+Workspace.client.``.`` // gives you "client"
+Workspace.client.``..``.docs.``.`` // gives you "docs"
+// etc.
+```
+
+### `AbsoluteFileSystemProvider`
+
+Works like `RelativeFileSystemProvider` but returns absolute paths.
+
+```fsharp
+open EasyBuild.FileSystemProvider
+
+// The relative path you want to work with
+// You can use `"."` or `""` to represent the current directory
+
+type Workspace = RelativeFileSystem<".">
+
+type SourceWorkspace = RelativeFileSystem<"./src/">
+```
+
+Example:
+
+Imagine you have the following project structure:
+
+```text
+/home/project/
+├── client/
+│   ├── index.html
+│   └── app.js
+└── docs/
+```
+
+```fsharp
+// Workspace represents the root folder `/home/project/`
+type Workspace = RelativeFileSystem<".">
+
 Workspace.client.``index.html`` // gives you "/home/project/client/index.html"
 Workspace.client.``.`` // gives you "/home/project/client"
-Workspace.client.``..``.docs // gives you "/home/project/docs"
+Workspace.client.``..``.docs.``.`` // gives you "/home/project/docs"
 // etc.
 ```
 
 > [!WARNING]
 > At the time of writing, `RelativeFileSystemProvider`/`AbsoluteFileSystemProvider` does not watch you filesystem for changes. To refresh changes, you can do one of the following:
-> * Restart the IDE
-> * Make a change to RelativeFileSystemProvider<"."> to force a refresh
-> * Rebuild the project
+>
+> - Restart the IDE
+> - Make a change to RelativeFileSystemProvider<"."> to force a refresh
+> - Rebuild the project
 >
 > This is [planned](https://github.com/easybuild-org/EasyBuild.FileSystemProvider/issues/1) to be improved in the future
 
@@ -124,15 +162,15 @@ Template format:
 > [!NOTE]
 > You can use any number of spaces or tabs for indentation.
 
-    ```text
-    dist
-        client
-            index.html
-            app.js
-    docs/
-    public
-        style.css
-    ```
+```text
+dist
+    client
+        index.html
+        app.js
+docs/
+public
+    style.css
+```
 
 Example:
 
