@@ -13,12 +13,20 @@ let private createFileLiterals
     =
 
     for file in directoryInfo.EnumerateFiles() do
-        let pathFieldLiteral =
-            ProvidedField.Literal(file.Name, typeof<string>, file.FullName |> makePath)
+        let adjustedFieldPath = makePath file.FullName
 
-        pathFieldLiteral.AddXmlDoc $"Path to '{file.FullName}'"
+        let pathFieldProperty =
+            ProvidedProperty(
+                file.Name,
+                typeof<FileInfo>,
+                isStatic = true,
+                getterCode = fun args -> <@@ FileInfo(adjustedFieldPath) @@>
+            )
 
-        rootType.AddMember pathFieldLiteral
+        pathFieldProperty.AddXmlDoc
+            $"<summary><c>System.IO.FileInfo</c> for '{file.FullName}'</summary>"
+
+        rootType.AddMember pathFieldProperty
 
 let rec private createDirectoryProperties
     (directoryInfo: DirectoryInfo)
@@ -29,8 +37,13 @@ let rec private createDirectoryProperties
     // Extract the full path in a variable so we can use it in the ToString method
     let currentFolderFullName = directoryInfo.FullName |> makePath
 
-    let currentFolderField =
-        ProvidedField.Literal(".", typeof<string>, currentFolderFullName)
+    let currentFolderProperty =
+        ProvidedProperty(
+            ".",
+            typeof<DirectoryInfo>,
+            isStatic = true,
+            getterCode = fun args -> <@@ DirectoryInfo(currentFolderFullName) @@>
+        )
 
     let toStringMethod =
         ProvidedMethod(
@@ -41,37 +54,27 @@ let rec private createDirectoryProperties
             invokeCode = fun args -> <@@ currentFolderFullName @@>
         )
 
-    let xmlDocText = $"Get the full path to '{currentFolderFullName}'"
-
-    currentFolderField.AddXmlDoc xmlDocText
-    toStringMethod.AddXmlDoc xmlDocText
-
-    rootType.AddMember currentFolderField
-    rootType.AddMember toStringMethod
-
-    // Provide pregenerated access to DirectoryInfo to provide access to other
-    // helpers without requiring us to construct them all in the type provider
-    let getDirectoryInfo =
-        let currentFolderFullName = <@@ currentFolderFullName @@>
-
-        let method =
-            ProvidedMethod(
-                "GetDirectoryInfo",
-                [],
-                typeof<DirectoryInfo>,
-                isStatic = true,
-                invokeCode =
-                    fun args -> <@@ let dir = DirectoryInfo(%%currentFolderFullName) in dir @@>
-            )
-
-        method.AddXmlDoc(
-            """<summary>Retrieves the <c>DirectoryInfo</c> object for the current directory.</summary>
-<returns>The current directory <c>DirectoryInfo</c> object"""
+    let getInfoMethod =
+        ProvidedMethod(
+            "GetInfo",
+            [],
+            typeof<DirectoryInfo>,
+            isStatic = true,
+            invokeCode = fun args -> <@@ DirectoryInfo(currentFolderFullName) @@>
         )
 
-        method
+    let xmlDocText = $"Get the full path to '{currentFolderFullName}'"
 
-    rootType.AddMember getDirectoryInfo
+    let xmlDocInfoText =
+        $"<summary>Get the <c>System.IO.DirectoryInfo</c> to '{currentFolderFullName}'</summary>"
+
+    currentFolderProperty.AddXmlDoc xmlDocInfoText
+    getInfoMethod.AddXmlDoc xmlDocInfoText
+    toStringMethod.AddXmlDoc xmlDocText
+
+    rootType.AddMember currentFolderProperty
+    rootType.AddMember toStringMethod
+    rootType.AddMember getInfoMethod
     createFileLiterals directoryInfo rootType makePath
 
     // Add parent directory
